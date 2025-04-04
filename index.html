@@ -24,14 +24,19 @@
 </head>
 <body>
     <div id="quote-box">
-        <p id="quote">Loading quote...</p>
+        <p id="quote">Fetching a quote...</p>
     </div>
 
     <script>
         async function fetchQuote() {
-            const response = await fetch("https://api.quotable.io/random");
-            const data = await response.json();
-            document.getElementById("quote").textContent = data.content;
+            try {
+                const response = await fetch("https://api.quotable.io/random");
+                if (!response.ok) throw new Error("Failed to fetch");
+                const data = await response.json();
+                document.getElementById("quote").textContent = data.content;
+            } catch (error) {
+                document.getElementById("quote").textContent = "In the middle of difficulty lies opportunity. - Albert Einstein";
+            }
         }
         fetchQuote();
     </script>
